@@ -1,0 +1,38 @@
+.jumbotron {
+  padding-top: 5rem;
+  background-color: rgb(246, 233, 246);
+  box-sizing: border-box;
+}
+
+footer {
+  background-color: rgb(173, 16, 173);
+  padding: 5px 0;
+}
+
+section {
+  padding-top: 5rem;
+}
+
+
+/* Target */
+.jumbotron:target {
+  animation: test 1s;
+}
+
+section:target {
+  animation: test 1s;
+}
+/* Last Target */
+
+
+/* Custom animation */
+@keyframes test {
+  0% {
+    padding-top: 8rem;
+  }
+
+  100% {
+    padding-top: 5rem;
+  }
+}
+/* Last Animation */
