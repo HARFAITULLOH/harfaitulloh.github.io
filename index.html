@@ -137,20 +137,30 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-md-7">
-            <form>
+            <div class="alert alert-success alert-dismissible fade show d-none" role="alert">
+              <strong>Terima kasih!</strong> Pesan Anda sudah kami terima.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <form name="portfolio-contact-form">
               <div class="mb-3">
                 <label for="name" class="form-label">Nama Lengkap</label>
-                <input type="text" class="form-control" id="name" aria-describedby="name" />
+                <input type="text" class="form-control" id="name" aria-describedby="name" name="nama"/>
               </div>
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" aria-describedby="email" />
+                <input type="email" class="form-control" id="email" aria-describedby="email" name="email" />
               </div>
               <div class="mb-3">
                 <label for="pesan" class="form-label">Pesan</label>
-                <textarea class="form-control" id="pesan" rows="3"></textarea>
+                <textarea class="form-control" id="pesan" rows="3" name="pesan"></textarea>
               </div>
-              <button type="submit" class="btn btn-primary" style="background-color: rgb(173, 16, 173); border: none">Kirim</button>
+              <button type="submit" class="btn btn-primary btn-sending" style="background-color: rgb(173, 16, 173); border: none">Kirim</button>
+
+              <button class="btn btn-primary btn-loading d-none" type="button" disabled style="background-color: rgb(173, 16, 173);">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+              </button>
             </form>
           </div>
         </div>
@@ -172,5 +182,37 @@
     <!-- Last Footer -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+    <!-- Google Sheet Script -->
+    <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxK4ciOA_x2nC1ouDv3lTX9APUesOPOK3E055N6FXKBrks5-j5AZYUYzNa_-k0m47LPBg/exec';
+      const form = document.forms['portfolio-contact-form'];
+      const btnSending = document.querySelector('.btn-sending');
+      const btnLoading = document.querySelector('.btn-loading');
+      const myAlert = document.querySelector('.alert');
+    
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        // Ketika tombol submit di click
+        // Tampilkan tombol loading, hilangkan tombol kirim
+        btnLoading.classList.toggle('d-none');
+        btnSending.classList.toggle('d-none');
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+          .then(response => {
+            // Tampilkan tombol loading, hilangkan tombol kirim
+            btnLoading.classList.toggle('d-none');
+            btnSending.classList.toggle('d-none');
+
+            // Tampilkan alert
+            myAlert.classList.toggle('d-none');
+
+            // Reset form
+            form.reset();
+            console.log('Success!', response)
+          })
+          .catch(error => console.error('Error!', error.message))
+      })
+    </script>
   </body>
 </html>
